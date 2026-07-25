@@ -15,11 +15,17 @@ export interface Measure {
   beats: Beat[];
 }
 
+export interface ScaleOutline {
+  name: string;
+  notes: Note[];
+}
+
 export interface Track {
   id: number;
   name: string;
   tuning: number[];
   measures: Measure[];
+  scale_outline?: ScaleOutline | null;
 }
 
 export interface SongData {

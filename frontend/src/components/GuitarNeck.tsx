@@ -50,10 +50,12 @@ function stringWidth(s: number): number {
 
 interface Props {
   activeNotes: Note[];
+  scaleNotes?: Note[];
 }
 
-export function GuitarNeck({ activeNotes }: Props) {
+export function GuitarNeck({ activeNotes, scaleNotes = [] }: Props) {
   const activeSet = new Set(activeNotes.map((n) => `${n.string}-${n.fret}`));
+  const scaleSet = new Set(scaleNotes.map((n) => `${n.string}-${n.fret}`));
 
   return (
     // fill the panel height; width follows the aspect ratio so the tall neck stays narrow
@@ -148,14 +150,17 @@ export function GuitarNeck({ activeNotes }: Props) {
           return Array.from({ length: FRET_COUNT + 1 }).map((_, fret) => {
             const key = `${s}-${fret}`;
             const active = activeSet.has(key);
+            const inScale = scaleSet.has(key);
+            const fill = active ? "#6366f1" : inScale ? "#eab308" : "transparent";
+            const stroke = active ? "#a5b4fc" : inScale ? "#fde047" : "transparent";
             return (
               <circle
                 key={key}
                 cx={stringX(s)}
                 cy={fretCy(fret)}
                 r={9}
-                fill={active ? "#6366f1" : "transparent"}
-                stroke={active ? "#a5b4fc" : "transparent"}
+                fill={fill}
+                stroke={stroke}
                 strokeWidth={1.5}
                 style={{ transition: "fill 40ms, stroke 40ms" }}
               />

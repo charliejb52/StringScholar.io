@@ -20,6 +20,13 @@ function getActiveNotes(
   return active;
 }
 
+// The scale outline is static for the whole song (not time-dependent) — it's
+// the note palette the scale-detection agent found for this track.
+function getScaleNotes(song: SongData, trackIndex: number): Note[] {
+  const track = song.tracks[trackIndex] ?? song.tracks[0];
+  return track?.scale_outline?.notes ?? [];
+}
+
 export function NeckPanel({ open }: { open: boolean }) {
   // Only THIS component subscribes to currentTime, so only it re-renders each frame.
   const songData = useStore((s) => s.songData);
@@ -31,6 +38,8 @@ export function NeckPanel({ open }: { open: boolean }) {
     open && songData
       ? getActiveNotes(songData, currentTime, activeTrackIndex)
       : [];
+  const scaleNotes =
+    open && songData ? getScaleNotes(songData, activeTrackIndex) : [];
 
   return (
     <aside
@@ -44,7 +53,7 @@ export function NeckPanel({ open }: { open: boolean }) {
     >
       {/* fixed-width inner so the neck doesn't squish while the panel animates */}
       <div style={{ width: 340, height: "100%", paddingLeft: 24 }}>
-        <GuitarNeck activeNotes={activeNotes} />
+        <GuitarNeck activeNotes={activeNotes} scaleNotes={scaleNotes} />
       </div>
     </aside>
   );

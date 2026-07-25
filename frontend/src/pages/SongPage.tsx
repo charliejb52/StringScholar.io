@@ -18,10 +18,27 @@ export function SongPage() {
   const setSongId = useStore((s) => s.setSongId);
   const clearSong = useStore((s) => s.clearSong);
   const songData = useStore((s) => s.songData);
+  const activeTrackIndex = useStore((s) => s.activeTrackIndex);
   const [neckOpen, setNeckOpen] = useState(false);
 
   usePlaybackLoop();
   const { isLoadingMidi } = useMidiTrack();
+
+  const handleGetScale = async () => {
+    if (!songData) return;
+    const measures = songData.tracks[activeTrackIndex]?.measures ?? [];
+    try {
+      const res = await fetch("http://localhost:8000/measures/scale", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(measures),
+      });
+      const text = await res.text();
+      console.log(text);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   useEffect(() => {
     const state = location.state as {
@@ -81,6 +98,21 @@ export function SongPage() {
           </div>
           <TrackSelector isLoading={isLoadingMidi} disabled={isLoadingMidi} />
         </div>
+
+        <button
+          onClick={handleGetScale}
+          style={{
+            background: "#1F1F1F",
+            color: "#F0F0F0",
+            border: "none",
+            fontSize: 14,
+            padding: "6px 12px",
+            borderRadius: 8,
+            cursor: "pointer",
+          }}
+        >
+          Get scale
+        </button>
 
         <button
           onClick={() => setNeckOpen((o) => !o)}
