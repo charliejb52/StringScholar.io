@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from fastapi import Depends, FastAPI, HTTPException, Header, UploadFile
+from fastapi import Body, Depends, FastAPI, HTTPException, Header, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 
@@ -154,14 +154,14 @@ async def midi_endpoint(file: UploadFile, track_index: int = 0):
         os.unlink(tmp_path)
 
 @app.post("/measures/scale")
-async def scale_endpoint(measures: list):
+async def scale_endpoint(measures: list = Body(...)):
     if not measures:
         raise HTTPException(status_code=403, detail="No measures provided.")
     
     scale_agent = scale_agent_graph()
-    response = scale_agent.invoke({"measures": measures, "scale": ""})
+    response = scale_agent.invoke({"measures": measures, "scale": []})
 
-    return response.scale
+    return response["scale"]
     
 
 
@@ -250,6 +250,7 @@ async def get_song(song_id: str):
                 "name": t["name"],
                 "tuning": t["tuning"],
                 "measures": t["note_data"],
+                "scale_outline": t.get("scale_outlines"),
             }
             for t in tracks_resp.data
         ]
