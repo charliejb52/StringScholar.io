@@ -3,6 +3,7 @@ import { useStore } from '../store';
 import { loadSampler } from '../tone';
 import { loadMidiIntoTone } from '../utils/loadMidiIntoTone';
 import { getAuthHeaders } from '../lib/supabase';
+import { API_BASE_URL } from '../lib/api';
 
 /**
  * Watches activeTrackIndex and swaps Tone.js notes whenever the track
@@ -42,12 +43,12 @@ export function useMidiTrack() {
             const form = new FormData();
             form.append('file', gpFile);
             res = await fetch(
-              `http://localhost:8000/midi?track_index=${activeTrackIndex}`,
+              `${API_BASE_URL}/midi?track_index=${activeTrackIndex}`,
               { method: 'POST', headers: authHeaders, body: form },
             );
           } else if (songId) {
             res = await fetch(
-              `http://localhost:8000/songs/${songId}/midi?track=${activeTrackIndex}`,
+              `${API_BASE_URL}/songs/${songId}/midi?track=${activeTrackIndex}`,
               { headers: authHeaders },
             );
           } else {

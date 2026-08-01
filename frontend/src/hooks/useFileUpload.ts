@@ -4,6 +4,7 @@ import { loadSampler, transportStop } from '../tone';
 import { loadMidiIntoTone } from '../utils/loadMidiIntoTone';
 import { useStore } from '../store';
 import { getAuthHeaders } from '../lib/supabase';
+import { API_BASE_URL } from '../lib/api';
 import type { SongData } from '../types';
 
 export type UploadStatus =
@@ -48,8 +49,8 @@ export function useFileUpload(onSuccess?: () => void) {
       let midiRes: Response;
       try {
         [parseRes, midiRes] = await Promise.all([
-          fetch('http://localhost:8000/parse', { method: 'POST', headers: authHeaders, body: form1 }),
-          fetch('http://localhost:8000/midi', { method: 'POST', headers: authHeaders, body: form2 }),
+          fetch(`${API_BASE_URL}/parse`, { method: 'POST', headers: authHeaders, body: form1 }),
+          fetch(`${API_BASE_URL}/midi`, { method: 'POST', headers: authHeaders, body: form2 }),
         ]);
       } catch (e) {
         setStatus({
