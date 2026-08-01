@@ -10,7 +10,6 @@ dist/
 build/
 .eggs/
 .installed.cfg
-lib/
 lib64/
 parts/
 sdist/
@@ -27,7 +26,6 @@ ENV/
 
 # uv
 .uv/
-uv.lock
 
 # Type checking
 .mypy_cache/
@@ -43,6 +41,10 @@ dmypy.json
 htmlcov/
 coverage.xml
 nosetests.xml
+
+# Jupyter notebooks (local testing/experimentation only)
+*.ipynb
+.ipynb_checkpoints/
 
 # ── Node / Frontend ───────────────────────────────────────────────────────────
 node_modules/
