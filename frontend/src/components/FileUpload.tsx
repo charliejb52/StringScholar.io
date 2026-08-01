@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useStore } from '../store';
 import { loadSampler, scheduleNotes, transportStop } from '../tone';
 import type { SongData } from '../types';
+import { API_BASE_URL } from '../lib/api';
 
 type Step =
   | { kind: 'idle' }
@@ -35,8 +36,8 @@ export function FileUpload() {
       let midiRes: Response;
       try {
         [parseRes, midiRes] = await Promise.all([
-          fetch('http://localhost:8000/parse', { method: 'POST', body: form1 }),
-          fetch('http://localhost:8000/midi', { method: 'POST', body: form2 }),
+          fetch(`${API_BASE_URL}/parse`, { method: 'POST', body: form1 }),
+          fetch(`${API_BASE_URL}/midi`, { method: 'POST', body: form2 }),
         ]);
       } catch (e) {
         setStep({
