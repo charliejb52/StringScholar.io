@@ -10,6 +10,7 @@ import { PlaybackBar } from "../components/PlaybackBar";
 import { TrackSelector } from "../components/TrackSelector";
 import type { SongData } from "../types";
 import { NeckPanel } from "../components/NeckPanel";
+import { API_BASE_URL } from "../lib/api";
 
 export function SongPage() {
   const location = useLocation();
@@ -28,7 +29,7 @@ export function SongPage() {
     if (!songData) return;
     const measures = songData.tracks[activeTrackIndex]?.measures ?? [];
     try {
-      const res = await fetch("http://localhost:8000/measures/scale", {
+      const res = await fetch(`${API_BASE_URL}/measures/scale`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(measures),

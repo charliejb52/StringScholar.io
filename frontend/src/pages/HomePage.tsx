@@ -5,6 +5,7 @@ import { useStore } from "../store";
 import { loadSampler, transportStop } from "../tone";
 import { loadMidiIntoTone } from "../utils/loadMidiIntoTone";
 import { supabase } from "../lib/supabase";
+import { API_BASE_URL } from "../lib/api";
 import type { Song, SongData } from "../types";
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
@@ -379,7 +380,7 @@ export function HomePage() {
 
   async function fetchLibrary() {
     try {
-      const res = await fetch("http://localhost:8000/songs");
+      const res = await fetch(`${API_BASE_URL}/songs`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const songs: Song[] = await res.json();
       setLibrary({ kind: "ready", songs });
@@ -396,8 +397,8 @@ export function HomePage() {
     setOpeningId(song.id);
     try {
       const [songRes, midiRes] = await Promise.all([
-        fetch(`http://localhost:8000/songs/${song.id}`),
-        fetch(`http://localhost:8000/songs/${song.id}/midi`),
+        fetch(`${API_BASE_URL}/songs/${song.id}`),
+        fetch(`${API_BASE_URL}/songs/${song.id}/midi`),
       ]);
       if (!songRes.ok) throw new Error(`HTTP ${songRes.status}`);
       const songData: SongData = await songRes.json();
