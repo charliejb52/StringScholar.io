@@ -162,7 +162,28 @@ async def scale_endpoint(measures: list = Body(...)):
     response = scale_agent.invoke({"measures": measures, "scale": []})
 
     return response["scale"]
-    
+
+
+@app.post("/tracks/{track_id}/parts")
+async def set_track_parts(track_id: str, parts: list = Body(...)):
+    """Manual test endpoint: persist split_song agent output onto a track's
+    `parts` column so it can be inspected in the UI. Not wired into the
+    /parse persist flow yet."""
+    try:
+        db = get_client()
+        resp = (
+            db.table("tracks")
+            .update({"parts": parts})
+            .eq("id", track_id)
+            .execute()
+        )
+        if not resp.data:
+            raise HTTPException(status_code=404, detail=f"Track {track_id} not found")
+        return resp.data[0]
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
 
 
 @app.get("/songs")
@@ -251,6 +272,7 @@ async def get_song(song_id: str):
                 "tuning": t["tuning"],
                 "measures": t["note_data"],
                 "scale_outline": t.get("scale_outlines"),
+                "parts": t.get("parts"),
             }
             for t in tracks_resp.data
         ]
