@@ -12,6 +12,16 @@ import type { SongData } from "../types";
 import { NeckPanel } from "../components/NeckPanel";
 import { API_BASE_URL } from "../lib/api";
 
+const C = {
+  bgstart: "#606ee6ff",
+  bgend: "#d77a4bff",
+  surface: "#ffffffff",
+  border: "#2E2E2E",
+  accent: "#d77a4bff",
+  text: "#000000ff",
+  muted: "#161616ff",
+} as const;
+
 export function SongPage() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -64,26 +74,25 @@ export function SongPage() {
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-        background: "#0D0D0D",
-        color: "#F0F0F0",
+        background: `linear-gradient(180deg, ${C.bgstart} 0%, ${C.bgend} 100%)`,
+        color: C.text,
       }}
     >
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <header
+        className="flex items-center justify-between py-5"
         style={{
-          flexShrink: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "20px 32px",
-          borderBottom: "1px solid #2E2E2E",
+          background: C.surface,
+          border: `1px solid ${C.border}`,
+          borderRadius: "16px",
+          overflow: "hidden",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <div>
             <h1
               style={{
-                fontFamily: "'Space Grotesk', system-ui",
+                fontFamily: "'Blippo', fantasy",
                 fontSize: 20,
                 fontWeight: 700,
                 lineHeight: 1.2,
@@ -92,7 +101,7 @@ export function SongPage() {
             >
               {songData.title}
             </h1>
-            <p style={{ fontSize: 13, color: "#6B6B6B", margin: "3px 0 0" }}>
+            <p style={{ fontSize: 13, color: C.muted, margin: "3px 0 0" }}>
               {songData.tempo} BPM &middot; {songData.tracks.length} track
               {songData.tracks.length !== 1 ? "s" : ""}
             </p>
@@ -101,27 +110,14 @@ export function SongPage() {
         </div>
 
         <button
-          onClick={handleGetScale}
-          style={{
-            background: "#1F1F1F",
-            color: "#F0F0F0",
-            border: "none",
-            fontSize: 14,
-            padding: "6px 12px",
-            borderRadius: 8,
-            cursor: "pointer",
-          }}
-        >
-          Get scale
-        </button>
-
-        <button
           onClick={() => setNeckOpen((o) => !o)}
           aria-pressed={neckOpen}
           style={{
-            background: neckOpen ? "#F59E0B" : "#1F1F1F",
-            color: neckOpen ? "#0D0D0D" : "#F0F0F0",
-            border: "none",
+            background: neckOpen
+              ? C.surface
+              : `linear-gradient(180deg, ${C.bgstart} 0%, ${C.bgend} 100%)`,
+            color: C.text,
+            border: "1px solid ${C.text}",
             fontSize: 14,
             padding: "6px 12px",
             borderRadius: 8,

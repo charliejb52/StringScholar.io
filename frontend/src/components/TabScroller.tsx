@@ -1,21 +1,31 @@
-import type { MouseEvent } from 'react';
-import { useStore } from '../store';
-import { transportSeek } from '../tone';
+import type { MouseEvent } from "react";
+import { useStore } from "../store";
+import { transportSeek } from "../tone";
+
+const C = {
+  bgstart: "#606ee6ff",
+  bgend: "#d77a4bff",
+  surface: "#ffffffff",
+  border: "#2E2E2E",
+  accent: "#d77a4bff",
+  text: "#000000ff",
+  muted: "#161616ff",
+} as const;
 
 // ── Layout constants ────────────────────────────────────────────────────────
-const PPS = 100;           // pixels per second of song time
-const TAB_HEIGHT = 160;    // px — total component height
-const STRING_TOP = 40;     // y of string 1 (high e) — leaves room for measure numbers
+const PPS = 100; // pixels per second of song time
+const TAB_HEIGHT = 160; // px — total component height
+const STRING_TOP = 40; // y of string 1 (high e) — leaves room for measure numbers
 const STRING_SPACING = 20; // px between adjacent strings
-const PLAYHEAD_X = 120;    // px from left of scroll area to the red line
-const LABEL_WIDTH = 36;    // px — fixed left column for string names
+const PLAYHEAD_X = 120; // px from left of scroll area to the red line
+const LABEL_WIDTH = 36; // px — fixed left column for string names
 
 // Accent matches GuitarNeck active fill (#818cf8 = indigo-400)
-const ACCENT = '#818cf8';
-const DIM = '#71717a'; // zinc-500
+const ACCENT = "#818cf8";
+const DIM = "#71717a"; // zinc-500
 
 // Standard tab staff: string 1 (high e) at top, string 6 (low E) at bottom
-const STRING_LABELS = ['e', 'B', 'G', 'D', 'A', 'E']; // indices 0–5 → strings 1–6
+const STRING_LABELS = ["e", "B", "G", "D", "A", "E"]; // indices 0–5 → strings 1–6
 
 function sy(stringNum: number): number {
   return STRING_TOP + (stringNum - 1) * STRING_SPACING;
@@ -69,7 +79,7 @@ export function TabScroller() {
   return (
     <div
       className="w-full max-w-5xl mx-auto flex rounded-xl border border-zinc-800 overflow-hidden"
-      style={{ height: TAB_HEIGHT, background: '#09090b' }}
+      style={{ height: TAB_HEIGHT, background: "#09090b" }}
     >
       {/* ── Fixed string-label column ───────────────────────────────────── */}
       <div
@@ -96,7 +106,11 @@ export function TabScroller() {
         <svg
           width={totalSvgWidth}
           height={TAB_HEIGHT}
-          style={{ transform: `translateX(${-offset}px)`, willChange: 'transform', display: 'block' }}
+          style={{
+            transform: `translateX(${-offset}px)`,
+            willChange: "transform",
+            display: "block",
+          }}
         >
           {/* String lines */}
           {STRING_LABELS.map((_, i) => {
@@ -170,14 +184,19 @@ export function TabScroller() {
                   </g>
                 );
               });
-            })
+            }),
           )}
         </svg>
 
         {/* Playhead — fixed, not scrolling */}
         <div
           className="absolute top-0 bottom-0 pointer-events-none"
-          style={{ left: PLAYHEAD_X, width: 1, background: '#ef4444', opacity: 0.7 }}
+          style={{
+            left: PLAYHEAD_X,
+            width: 1,
+            background: "#ef4444",
+            opacity: 0.7,
+          }}
         />
       </div>
     </div>

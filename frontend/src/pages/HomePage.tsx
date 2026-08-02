@@ -10,12 +10,13 @@ import type { Song, SongData } from "../types";
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const C = {
-  bg: "#0D0D0D",
-  surface: "#1A1A1A",
+  bgstart: "#d77a4bff",
+  bgend: "#606ee6ff",
+  surface: "#ffffffff",
   border: "#2E2E2E",
-  accent: "#E8C547",
-  text: "#F0F0F0",
-  muted: "#6B6B6B",
+  accent: "#d77a4bff",
+  text: "#000000ff",
+  muted: "#161616ff",
 } as const;
 
 const DISPLAY = "'Space Grotesk', system-ui, sans-serif";
@@ -27,36 +28,6 @@ function formatDuration(seconds: number | null): string {
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
   return `${m}:${s.toString().padStart(2, "0")}`;
-}
-
-// ── Tab staff watermark ───────────────────────────────────────────────────────
-function TabWatermark() {
-  const ys = ["16%", "31%", "46%", "61%", "76%", "91%"];
-  return (
-    <svg
-      aria-hidden
-      style={{
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-      }}
-      preserveAspectRatio="none"
-    >
-      {ys.map((y, i) => (
-        <line
-          key={i}
-          x1="0"
-          y1={y}
-          x2="100%"
-          y2={y}
-          stroke={C.text}
-          strokeWidth="1"
-        />
-      ))}
-    </svg>
-  );
 }
 
 // ── Spinner ───────────────────────────────────────────────────────────────────
@@ -282,7 +253,7 @@ function UploadSection({ onUploaded }: { onUploaded: () => void }) {
         onMouseEnter={(e) => {
           if (!loading) {
             e.currentTarget.style.background = C.accent;
-            e.currentTarget.style.color = C.bg;
+            e.currentTarget.style.color = `linear-gradient(180deg, ${C.bgstart} 0%, ${C.bgend} 100%)`;
           }
         }}
         onMouseLeave={(e) => {
@@ -424,63 +395,31 @@ export function HomePage() {
     <div
       style={{
         minHeight: "100vh",
-        background: C.bg,
+        background: `linear-gradient(180deg, ${C.bgstart} 0%, ${C.bgend} 100%)`,
         color: C.text,
         display: "flex",
         flexDirection: "column",
       }}
     >
       <div
-        className="flex flex-col md:flex-row flex-1"
+        className="flex flex-col min-h-screen"
         style={{ minHeight: "100vh" }}
       >
-        {/* ── Left: identity ─────────────────────────────────────────────── */}
-        <div
-          className="relative w-full md:w-2/5 flex items-center justify-center md:justify-start border-b md:border-b-0 md:border-r"
-          style={{ padding: "64px 48px", borderColor: C.border }}
+        {/* ── Top: identity ─────────────────────────────────────────────── */}
+        <header
+          className="top-0 left-0 w-full bg-slate-900 py-4"
+          style={{
+            background: C.surface,
+            border: `1px solid ${C.border}`,
+            borderRadius: "16px",
+            overflow: "hidden",
+          }}
         >
-          <div style={{ position: "absolute", inset: 0, opacity: 0.045 }}>
-            <TabWatermark />
-          </div>
-
-          <div style={{ position: "relative", zIndex: 1, maxWidth: "380px" }}>
-            <h1
-              style={{
-                fontFamily: DISPLAY,
-                fontWeight: 700,
-                fontSize: "clamp(40px, 5vw, 64px)",
-                letterSpacing: "0.15em",
-                color: C.text,
-                lineHeight: 1,
-                margin: 0,
-              }}
-            >
-              BARD
-            </h1>
-            <div
-              style={{
-                width: "48px",
-                height: "2px",
-                background: C.accent,
-                margin: "20px 0",
-              }}
-            />
-            <p
-              style={{
-                fontFamily: BODY,
-                fontSize: "16px",
-                lineHeight: 1.65,
-                color: C.muted,
-                margin: 0,
-              }}
-            >
-              Visualize any Guitar Pro file on a real-time fretboard. Built for
-              guitarists, by guitarists.
-            </p>
-          </div>
-        </div>
-
-        {/* ── Right: library panel ──────────────────────────────────────── */}
+          <h1 className="font-['Blippo',_fantasy] text-4xl font-bold text-black">
+            StringScholar.io
+          </h1>
+        </header>
+        {/* ── Body: library panel ──────────────────────────────────────── */}
         <div
           className="flex flex-col flex-1 p-6 md:p-10"
           style={{ minWidth: 0 }}
@@ -492,6 +431,7 @@ export function HomePage() {
               border: `1px solid ${C.border}`,
               borderRadius: "16px",
               overflow: "hidden",
+              gap: "20px",
             }}
           >
             {/* Panel header */}
@@ -523,7 +463,7 @@ export function HomePage() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 style={{
-                  background: C.bg,
+                  background: `linear-gradient(180deg, ${C.bgstart} 0%, ${C.bgend} 100%)`,
                   border: `1px solid ${C.border}`,
                   borderRadius: "8px",
                   padding: "6px 12px",
