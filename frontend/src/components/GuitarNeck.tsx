@@ -1,5 +1,15 @@
 import type { Note } from "../types";
 
+const C = {
+  bgstart: "#606ee6ff",
+  bgend: "#d77a4bff",
+  surface: "#ffffffff",
+  border: "#2E2E2E",
+  accent: "#d77a4bff",
+  text: "#000000ff",
+  muted: "#161616ff",
+} as const;
+
 // ── Layout constants (VERTICAL neck: frets run top→bottom, strings left→right) ──
 const FRET_COUNT = 24;
 const STRING_COUNT = 6;
@@ -151,8 +161,16 @@ export function GuitarNeck({ activeNotes, scaleNotes = [] }: Props) {
             const key = `${s}-${fret}`;
             const active = activeSet.has(key);
             const inScale = scaleSet.has(key);
-            const fill = active ? "#6366f1" : inScale ? "#eab308" : "transparent";
-            const stroke = active ? "#a5b4fc" : inScale ? "#fde047" : "transparent";
+            const fill = active
+              ? C.bgstart
+              : inScale
+                ? "#eab308"
+                : "transparent";
+            const stroke = active
+              ? "#a5b4fc"
+              : inScale
+                ? "#fde047"
+                : "transparent";
             return (
               <circle
                 key={key}
