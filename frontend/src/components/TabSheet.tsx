@@ -2,16 +2,6 @@ import React, { useMemo, useRef, useEffect } from "react";
 import { useStore } from "../store";
 import type { Measure } from "../types";
 
-const C = {
-  bgstart: "#606ee6ff",
-  bgend: "#d77a4bff",
-  surface: "#ffffffff",
-  border: "#2E2E2E",
-  accent: "#d77a4bff",
-  text: "#000000ff",
-  muted: "#161616ff",
-} as const;
-
 // ── Layout constants ───────────────────────────────────────────────────────────
 const MEASURES_PER_ROW = 4;
 const PX_PER_SEC = 100;
@@ -21,13 +11,15 @@ const LEFT_PAD = 52; // includes string-label gutter
 const TOP = 32; // space above staff for measure numbers
 
 // ── Style tokens ───────────────────────────────────────────────────────────────
-const PAGE_BG = "#0D0D0D";
-const ACCENT = "#818cf8"; // indigo-400 — matches existing app accent
-const STRING_COLOR = "#3f3f46"; // zinc-700
-const BAR_COLOR = "#3f3f46";
-const FRET_COLOR = "#a1a1aa"; // zinc-400 — legible on dark bg
-const MNUM_COLOR = "#3a3a3a"; // subtle measure numbers
-const LABEL_COLOR = "#52525b"; // zinc-600
+const C = {
+  bgstart: "#606ee6ff",
+  bgend: "#d77a4bff",
+  surface: "#ffffffff",
+  border: "#2E2E2E",
+  accent: "#d77a4bff",
+  text: "#000000ff",
+  muted: "#161616ff",
+} as const;
 
 // Standard 6-string labels: index 0 = string 1 (high e) = top staff line
 const STRING_LABELS_6 = ["e", "B", "G", "D", "A", "E"];
@@ -99,7 +91,7 @@ const TabRow = React.memo(function TabRow({
   return (
     <svg width={rowWidth} height={rowHeight} style={{ display: "block" }}>
       {/* Background */}
-      <rect width={rowWidth} height={rowHeight} fill={PAGE_BG} />
+      <rect width={rowWidth} height={rowHeight} fill={C.surface} />
 
       {/* Row separator line (drawn in SVG so no border-box sizing issues) */}
       <line
@@ -118,7 +110,7 @@ const TabRow = React.memo(function TabRow({
           x={LEFT_PAD - 6}
           y={TOP + i * STRING_GAP + 4}
           textAnchor="end"
-          fill={LABEL_COLOR}
+          fill={C.text}
           fontSize={10}
           fontFamily="ui-monospace, monospace"
         >
@@ -134,7 +126,7 @@ const TabRow = React.memo(function TabRow({
           y1={TOP + i * STRING_GAP}
           x2={rowWidth - 8}
           y2={TOP + i * STRING_GAP}
-          stroke={STRING_COLOR}
+          stroke={C.text}
           strokeWidth={i === numStrings - 1 ? 1.2 : 0.7}
         />
       ))}
@@ -151,13 +143,13 @@ const TabRow = React.memo(function TabRow({
               y1={TOP - 6}
               x2={bx}
               y2={TOP + staffH + 6}
-              stroke={BAR_COLOR}
+              stroke={C.text}
               strokeWidth={0.8}
             />
             <text
               x={bx + 3}
               y={TOP - 10}
-              fill={MNUM_COLOR}
+              fill={C.text}
               fontSize={9}
               fontFamily="system-ui, sans-serif"
             >
@@ -183,13 +175,13 @@ const TabRow = React.memo(function TabRow({
                   y={sy - 7}
                   width={boxW}
                   height={13}
-                  fill={PAGE_BG}
+                  fill={C.surface}
                 />
                 <text
                   x={bx}
                   y={sy + 4}
                   textAnchor="middle"
-                  fill={FRET_COLOR}
+                  fill={C.text}
                   fontSize={11}
                   fontFamily="ui-monospace, monospace"
                 >
@@ -256,7 +248,7 @@ function Cursor({ rows, rowRefs, numStrings, rowHeight }: CursorProps) {
         top,
         width: 2,
         height,
-        background: ACCENT,
+        background: C.accent,
         opacity: 0.85,
         pointerEvents: "none",
         borderRadius: 1,
@@ -306,7 +298,7 @@ export function TabSheet() {
         position: "relative",
         overflowY: "auto",
         overflowX: "auto",
-        background: PAGE_BG,
+        background: C.surface,
         borderRadius: 12,
         border: "1px solid #2E2E2E",
       }}
