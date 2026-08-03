@@ -1,6 +1,6 @@
 # **[stringscholar.io](https://lucky-nourishment-production-bed3.up.railway.app/song)**
 
-It is currently a website for uploading and playing guitar tabs.
+Is currently a website for uploading and playing guitar tabs.
 
 Some cool features planned:
 - Botzart: teaching agent that breaks down the music theory of songs and explains it to you with varying depth depending on your mastery level
